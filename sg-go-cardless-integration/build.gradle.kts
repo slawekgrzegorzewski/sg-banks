@@ -1,9 +1,17 @@
+import org.springframework.boot.gradle.tasks.bundling.BootJar
+
 group = "pl.sg"
 version = "0.0.1-SNAPSHOT"
 
 java {
     sourceCompatibility = JavaVersion.VERSION_21
 }
+
+val jar: Jar by tasks
+val bootJar: BootJar by tasks
+
+bootJar.enabled = false
+jar.enabled = true
 
 plugins {
     java
