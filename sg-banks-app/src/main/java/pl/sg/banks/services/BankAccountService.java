@@ -6,7 +6,7 @@ public interface BankAccountService {
 
     void fetchAllTransactions();
 
-    void fetchAccountTransactions();
+    void fetchAccountTransactions(BankAccount bankAccount);
 
     void fetch(String bankAccountExternalId);
 

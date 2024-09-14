@@ -1,4 +1,4 @@
-package pl.sg.go_cardless.model;
+package pl.sg.banks.model;
 
 import jakarta.persistence.Embeddable;
 import jakarta.persistence.Embedded;
@@ -9,18 +9,18 @@ import java.time.OffsetDateTime;
 @Embeddable
 public class BalanceEmbeddable {
     @Embedded
-    private Amount balanceAmount;
+    private AmountEmbeddable balanceAmount;
     private String balanceType;
     public Boolean creditLimitIncluded;
     public OffsetDateTime lastChangeDateTime;
     public String lastCommittedTransaction;
     private LocalDate referenceDate;
 
-    public Amount getBalanceAmount() {
+    public AmountEmbeddable getBalanceAmount() {
         return balanceAmount;
     }
 
-    public BalanceEmbeddable setBalanceAmount(Amount balanceAmount) {
+    public BalanceEmbeddable setBalanceAmount(AmountEmbeddable balanceAmount) {
         this.balanceAmount = balanceAmount;
         return this;
     }

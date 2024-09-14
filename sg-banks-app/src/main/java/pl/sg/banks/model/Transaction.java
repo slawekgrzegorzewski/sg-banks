@@ -1,4 +1,4 @@
-package pl.sg.go_cardless.model;
+package pl.sg.banks.model;
 
 import jakarta.persistence.*;
 
@@ -7,6 +7,7 @@ import java.time.LocalDateTime;
 import java.time.OffsetDateTime;
 
 @Entity
+@Table(name = "nodrigen_transaction")
 public class Transaction {
     @Id
 
@@ -41,7 +42,7 @@ public class Transaction {
             @AttributeOverride(name = "bban", column = @Column(name = "creditor_account_bban")),
             @AttributeOverride(name = "iban", column = @Column(name = "creditor_account_iban"))
     })
-    private Account creditorAccount;
+    private AccountEmbeddable creditorAccount;
     private String creditorAgent;
     private String creditorId;
     private String creditorName;
@@ -54,13 +55,13 @@ public class Transaction {
             @AttributeOverride(name = "instructedAmount.currency", column = @Column(name = "currency_exchange_instructed_amount_currency")),
             @AttributeOverride(name = "instructedAmount.amount", column = @Column(name = "currency_exchange_instructed_amount_amount"))
     })
-    private CurrencyExchange currencyExchange;
+    private CurrencyExchangeEmbeddable currencyExchange;
     @Embedded
     @AttributeOverrides({
             @AttributeOverride(name = "bban", column = @Column(name = "debtor_account_bban")),
             @AttributeOverride(name = "iban", column = @Column(name = "debtor_account_iban"))
     })
-    private Account debtorAccount;
+    private AccountEmbeddable debtorAccount;
     private String debtorAgent;
     private String debtorName;
     private String entryReference;
@@ -76,13 +77,15 @@ public class Transaction {
             @AttributeOverride(name = "amount", column = @Column(name = "transaction_amount_amount")),
             @AttributeOverride(name = "currency", column = @Column(name = "transaction_amount_currency"))
     })
-    private Amount transactionAmount;
+    private AmountEmbeddable transactionAmount;
     private String transactionId;
     private String ultimateCreditor;
     private String ultimateDebtor;
     private LocalDate valueDate;
     private OffsetDateTime valueDateTime;
     private LocalDateTime importTime;
+    @ManyToOne
+    private BankAccount bankAccount;
 
     public Integer getId() {
         return id;
@@ -165,11 +168,11 @@ public class Transaction {
         return this;
     }
 
-    public Account getCreditorAccount() {
+    public AccountEmbeddable getCreditorAccount() {
         return creditorAccount;
     }
 
-    public Transaction setCreditorAccount(Account creditorAccount) {
+    public Transaction setCreditorAccount(AccountEmbeddable creditorAccount) {
         this.creditorAccount = creditorAccount;
         return this;
     }
@@ -201,20 +204,20 @@ public class Transaction {
         return this;
     }
 
-    public CurrencyExchange getCurrencyExchange() {
+    public CurrencyExchangeEmbeddable getCurrencyExchange() {
         return currencyExchange;
     }
 
-    public Transaction setCurrencyExchange(CurrencyExchange currencyExchange) {
+    public Transaction setCurrencyExchange(CurrencyExchangeEmbeddable currencyExchange) {
         this.currencyExchange = currencyExchange;
         return this;
     }
 
-    public Account getDebtorAccount() {
+    public AccountEmbeddable getDebtorAccount() {
         return debtorAccount;
     }
 
-    public Transaction setDebtorAccount(Account debtorAccount) {
+    public Transaction setDebtorAccount(AccountEmbeddable debtorAccount) {
         this.debtorAccount = debtorAccount;
         return this;
     }
@@ -309,11 +312,11 @@ public class Transaction {
         return this;
     }
 
-    public Amount getTransactionAmount() {
+    public AmountEmbeddable getTransactionAmount() {
         return transactionAmount;
     }
 
-    public Transaction setTransactionAmount(Amount transactionAmount) {
+    public Transaction setTransactionAmount(AmountEmbeddable transactionAmount) {
         this.transactionAmount = transactionAmount;
         return this;
     }
@@ -369,6 +372,15 @@ public class Transaction {
 
     public Transaction setImportTime(LocalDateTime importTime) {
         this.importTime = importTime;
+        return this;
+    }
+
+    public BankAccount getBankAccount() {
+        return bankAccount;
+    }
+
+    public Transaction setBankAccount(BankAccount bankAccount) {
+        this.bankAccount = bankAccount;
         return this;
     }
 

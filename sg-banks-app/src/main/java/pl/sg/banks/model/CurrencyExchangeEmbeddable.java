@@ -1,4 +1,4 @@
-package pl.sg.go_cardless.model;
+package pl.sg.banks.model;
 
 import jakarta.persistence.Embeddable;
 import jakarta.persistence.Embedded;
@@ -7,10 +7,10 @@ import java.math.BigDecimal;
 import java.util.Currency;
 
 @Embeddable
-public class CurrencyExchange {
+public class CurrencyExchangeEmbeddable {
     public BigDecimal exchangeRate;
     @Embedded
-    public Amount instructedAmount;
+    public AmountEmbeddable instructedAmount;
     public Currency sourceCurrency;
     public Currency targetCurrency;
     public Currency unitCurrency;
@@ -19,16 +19,16 @@ public class CurrencyExchange {
         return exchangeRate;
     }
 
-    public CurrencyExchange setExchangeRate(BigDecimal exchangeRate) {
+    public CurrencyExchangeEmbeddable setExchangeRate(BigDecimal exchangeRate) {
         this.exchangeRate = exchangeRate;
         return this;
     }
 
-    public Amount getInstructedAmount() {
+    public AmountEmbeddable getInstructedAmount() {
         return instructedAmount;
     }
 
-    public CurrencyExchange setInstructedAmount(Amount instructedAmount) {
+    public CurrencyExchangeEmbeddable setInstructedAmount(AmountEmbeddable instructedAmount) {
         this.instructedAmount = instructedAmount;
         return this;
     }
@@ -37,7 +37,7 @@ public class CurrencyExchange {
         return sourceCurrency;
     }
 
-    public CurrencyExchange setSourceCurrency(Currency sourceCurrency) {
+    public CurrencyExchangeEmbeddable setSourceCurrency(Currency sourceCurrency) {
         this.sourceCurrency = sourceCurrency;
         return this;
     }
@@ -46,7 +46,7 @@ public class CurrencyExchange {
         return targetCurrency;
     }
 
-    public CurrencyExchange setTargetCurrency(Currency targetCurrency) {
+    public CurrencyExchangeEmbeddable setTargetCurrency(Currency targetCurrency) {
         this.targetCurrency = targetCurrency;
         return this;
     }
@@ -55,7 +55,7 @@ public class CurrencyExchange {
         return unitCurrency;
     }
 
-    public CurrencyExchange setUnitCurrency(Currency unitCurrency) {
+    public CurrencyExchangeEmbeddable setUnitCurrency(Currency unitCurrency) {
         this.unitCurrency = unitCurrency;
         return this;
     }

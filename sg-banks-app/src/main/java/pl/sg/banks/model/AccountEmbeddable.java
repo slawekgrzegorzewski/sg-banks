@@ -1,9 +1,9 @@
-package pl.sg.go_cardless.model;
+package pl.sg.banks.model;
 
 import jakarta.persistence.Embeddable;
 
 @Embeddable
-public class Account {
+public class AccountEmbeddable {
     public String bban;
     public String iban;
 
@@ -11,7 +11,7 @@ public class Account {
         return bban;
     }
 
-    public Account setBban(String bban) {
+    public AccountEmbeddable setBban(String bban) {
         this.bban = bban;
         return this;
     }
@@ -20,7 +20,7 @@ public class Account {
         return iban;
     }
 
-    public Account setIban(String iban) {
+    public AccountEmbeddable setIban(String iban) {
         this.iban = iban;
         return this;
     }

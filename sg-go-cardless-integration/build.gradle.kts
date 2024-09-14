@@ -22,8 +22,15 @@ repositories {
 }
 
 dependencies {
-    implementation("org.hibernate.orm:hibernate-core:6.6.0.Final")
+    implementation("com.fasterxml.jackson.core:jackson-annotations:2.17.2")
     implementation("jakarta.validation:jakarta.validation-api:3.0.2")
+    implementation("net.logstash.logback:logstash-logback-encoder:7.2")
+    implementation("org.springframework.boot:spring-boot-starter-webflux")
+    implementation("org.hibernate.orm:hibernate-core:6.6.0.Final")
+    implementation("org.slf4j:slf4j-api:2.0.16")
+
+    testImplementation("org.junit.jupiter:junit-jupiter:5.9.1")
+
     compileOnly("org.projectlombok:lombok")
     runtimeOnly("org.postgresql:postgresql")
     annotationProcessor("org.projectlombok:lombok")

@@ -1,20 +1,15 @@
 package pl.sg.banks.model;
 
-import jakarta.validation.constraints.NotNull;
-import pl.sg.accountant.model.accounts.Account;
-import pl.sg.application.model.Domain;
-import pl.sg.application.model.WithDomain;
-import pl.sg.integrations.nodrigen.model.balances.NodrigenBankAccountBalance;
-import pl.sg.integrations.nodrigen.model.transcations.NodrigenTransaction;
-
 import jakarta.persistence.*;
+import jakarta.validation.constraints.NotNull;
+
 import java.util.Currency;
 import java.util.List;
 
 @Entity
 public class BankAccount {
     @Id
-    
+
     @SequenceGenerator(
             name = "commonIdGenerator",
             sequenceName = "hibernate_sequence",
@@ -35,9 +30,9 @@ public class BankAccount {
     @ManyToOne
     private BankPermission bankPermission;
     @OneToMany(mappedBy = "bankAccount")
-    private List<NodrigenTransaction> nodrigenTransactions;
+    private List<Transaction> nodrigenTransactions;
     @OneToMany(mappedBy = "bankAccount")
-    private List<NodrigenBankAccountBalance> nodrigenBalances;
+    private List<BankAccountBalance> nodrigenBalances;
 
     public Integer getId() {
         return id;
@@ -102,26 +97,6 @@ public class BankAccount {
         return this;
     }
 
-    public Account getAccount() {
-        return account;
-    }
-
-    public BankAccount setAccount(Account account) {
-        this.account = account;
-        return this;
-    }
-
-    @Override
-    public Domain getDomain() {
-        return domain;
-    }
-
-    @Override
-    public BankAccount setDomain(Domain domain) {
-        this.domain = domain;
-        return this;
-    }
-
     public BankPermission getBankPermission() {
         return bankPermission;
     }
@@ -131,20 +106,20 @@ public class BankAccount {
         return this;
     }
 
-    public List<NodrigenTransaction> getNodrigenTransactions() {
+    public List<Transaction> getNodrigenTransactions() {
         return nodrigenTransactions;
     }
 
-    public BankAccount setNodrigenTransactions(List<NodrigenTransaction> nodrigenTransactions) {
+    public BankAccount setNodrigenTransactions(List<Transaction> nodrigenTransactions) {
         this.nodrigenTransactions = nodrigenTransactions;
         return this;
     }
 
-    public List<NodrigenBankAccountBalance> getNodrigenBalances() {
+    public List<BankAccountBalance> getNodrigenBalances() {
         return nodrigenBalances;
     }
 
-    public BankAccount setNodrigenBalances(List<NodrigenBankAccountBalance> nodrigenBalances) {
+    public BankAccount setNodrigenBalances(List<BankAccountBalance> nodrigenBalances) {
         this.nodrigenBalances = nodrigenBalances;
         return this;
     }

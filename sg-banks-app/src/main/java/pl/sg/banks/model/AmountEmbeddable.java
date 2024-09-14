@@ -1,4 +1,4 @@
-package pl.sg.go_cardless.model;
+package pl.sg.banks.model;
 
 import jakarta.persistence.Embeddable;
 
@@ -6,7 +6,7 @@ import java.math.BigDecimal;
 import java.util.Currency;
 
 @Embeddable
-public class Amount {
+public class AmountEmbeddable {
     public BigDecimal amount;
     public Currency currency;
 
@@ -14,7 +14,7 @@ public class Amount {
         return amount;
     }
 
-    public Amount setAmount(BigDecimal amount) {
+    public AmountEmbeddable setAmount(BigDecimal amount) {
         this.amount = amount;
         return this;
     }
@@ -23,7 +23,7 @@ public class Amount {
         return currency;
     }
 
-    public Amount setCurrency(Currency currency) {
+    public AmountEmbeddable setCurrency(Currency currency) {
         this.currency = currency;
         return this;
     }
