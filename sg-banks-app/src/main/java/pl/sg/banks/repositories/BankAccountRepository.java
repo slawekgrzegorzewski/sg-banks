@@ -11,6 +11,9 @@ public interface BankAccountRepository extends JpaRepository<BankAccount, Intege
 
     BankAccount getBankAccountByExternalId(String externalId);
 
+    @Query("SELECT ba FROM BankAccount ba WHERE ba.bankPermission.withdrawnAt IS NULL")
+    List<BankAccount> findBankAccountsToFetchData();
+
     @Query("SELECT ba FROM BankAccount ba WHERE ba.bankPermission = ?1")
     List<BankAccount> findBankAccountsForPermission(BankPermission bp);
 }

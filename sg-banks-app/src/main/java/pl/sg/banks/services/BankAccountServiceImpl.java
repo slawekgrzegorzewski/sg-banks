@@ -49,7 +49,7 @@ public class BankAccountServiceImpl implements BankAccountService {
 
     @Override
     public void fetchAllTransactions() {
-        bankAccountRepository.findAll().forEach(this::fetchAccountTransactions);
+        bankAccountRepository.findBankAccountsToFetchData().forEach(this::fetchAccountTransactions);
     }
 
     @Override
@@ -190,7 +190,7 @@ public class BankAccountServiceImpl implements BankAccountService {
 
     @Override
     public void fetchAllBalances() {
-        bankAccountRepository.findAll().forEach(this::fetchAccountBalances);
+        bankAccountRepository.findBankAccountsToFetchData().forEach(this::fetchAccountBalances);
     }
 
     @Override
