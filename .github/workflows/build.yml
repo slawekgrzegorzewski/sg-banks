@@ -37,9 +37,7 @@ jobs:
       - name: Build with Gradle Wrapper
         id: build
         run: |
-          cd sg-banks-app
-          ls
-          ./gradlew build
+          ./gradlew :sg-banks-app:build
 
       - name: setup insecure registry
         id: setup-insecure-registry
