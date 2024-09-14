@@ -37,6 +37,7 @@ jobs:
       - name: Build with Gradle Wrapper
         id: build
         run: |
+          ls
           cd sg-app-banks
           ./gradlew build
 
