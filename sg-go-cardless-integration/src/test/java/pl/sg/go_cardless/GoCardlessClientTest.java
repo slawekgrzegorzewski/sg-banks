@@ -1,5 +1,6 @@
 package pl.sg.go_cardless;
 
+import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 import pl.sg.go_cardless.rest.*;
 import pl.sg.go_cardless.rest.balances.BalancesMain;
@@ -17,7 +18,9 @@ import java.util.Random;
 import java.util.UUID;
 
 class GoCardlessClientTest {
+
     @Test
+    @Disabled
     void a() throws MalformedURLException {
         GoCardlessClient goCardlessClient = goCardlessClient();
         List<Institution> institutions = goCardlessClient.listInstitutions("PL");
@@ -47,6 +50,7 @@ class GoCardlessClientTest {
     }
 
     @Test
+    @Disabled
     void b() throws MalformedURLException {
         GoCardlessClient goCardlessClient = goCardlessClient();
         Requisition requisition = goCardlessClient.getRequisition(UUID.fromString("64161a0d-36d6-4005-8e6a-536fda1af400")).orElseThrow();
