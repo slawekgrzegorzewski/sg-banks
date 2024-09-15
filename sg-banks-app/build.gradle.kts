@@ -6,7 +6,12 @@ version = "0.0.1-SNAPSHOT"
 
 val output = ByteArrayOutputStream()
 var command =
-    if (Os.isFamily(Os.FAMILY_MAC)) "dev-ops/setup/get-authorization-token.sh" else "aws codeartifact get-authorization-token --domain sg-repository --domain-owner 215372400964 --region eu-central-1 --query authorizationToken --output text"
+    if (Os.isFamily(Os.FAMILY_MAC)) "../dev-ops/setup/get-authorization-token.sh" else "aws codeartifact get-authorization-token --domain sg-repository --domain-owner 215372400964 --region eu-central-1 --query authorizationToken --output text"
+
+file("../dev-ops/docker/currency.properties")
+    .copyTo(
+        file("${System.getProperty("java.home")}\\lib\\currency.properties"),
+        overwrite = true)
 
 project.exec {
     commandLine = command.split(" ")
