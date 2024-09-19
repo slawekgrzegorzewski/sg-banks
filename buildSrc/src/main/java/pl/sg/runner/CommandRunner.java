@@ -9,12 +9,11 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 public class CommandRunner {
-    public static ProcessResult runCommand(String command) {
-        System.out.println("Running command: " + command);
-        String[] parts = command.split("\\s");
+    public static ProcessResult runCommand(List<String> command) {
+        System.out.println("Running command: " + String.join(" ", command));
         final Process proc;
         try {
-            proc = new ProcessBuilder(parts)
+            proc = new ProcessBuilder(command)
                     .redirectOutput(ProcessBuilder.Redirect.PIPE)
                     .redirectError(ProcessBuilder.Redirect.PIPE)
                     .start();

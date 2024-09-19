@@ -3,7 +3,11 @@ package pl.sg.build;
 import pl.sg.runner.CommandRunner;
 import pl.sg.runner.ProcessResult;
 
+import java.util.Arrays;
+import java.util.List;
 import java.util.Objects;
+import java.util.function.Predicate;
+import java.util.stream.Stream;
 
 public class CodeArtifactAccess {
     public static String token = null;
@@ -22,15 +26,19 @@ public class CodeArtifactAccess {
         String awsProfile = OsUtil.getOS() == OsUtil.OS.MAC
                 ? "--profile sg-app"
                 : "";
-        String command = """
-                %s codeartifact %s \
-                get-authorization-token \
-                --domain sg-repository \
-                --domain-owner 215372400964 \
-                --region eu-central-1 \
-                --query authorizationToken \
-                --output text
-                """.formatted(awsCommand, awsProfile);
+        List<String> command = Stream.of(
+                        awsCommand,
+                        "get-authorization-token",
+                        awsProfile,
+                        "--domain sg-repository",
+                        "--domain-owner 215372400964",
+                        "--region eu-central-1",
+                        "--query authorizationToken",
+                        "--output text"
+                )
+                .flatMap(s -> Arrays.stream(s.split(" ")))
+                .filter(Predicate.not(String::isBlank))
+                .toList();
         ProcessResult processResult = CommandRunner.runCommand(command);
         if (processResult.exitCode() > 0) {
             throw new RuntimeException(String.join("\n", processResult.error()));

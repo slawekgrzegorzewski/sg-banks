@@ -4,6 +4,8 @@ import org.jetbrains.annotations.NotNull;
 import pl.sg.runner.CommandRunner;
 import pl.sg.runner.ProcessResult;
 
+import java.util.List;
+
 public class VersionUtil {
 
     private VersionUtil() {
@@ -25,7 +27,7 @@ public class VersionUtil {
     }
 
     public static @NotNull Version getCurrentVersion() {
-        ProcessResult processResult = CommandRunner.runCommand("git tag -l");
+        ProcessResult processResult = CommandRunner.runCommand(List.of("git", "tag", "-l"));
         if (processResult.exitCode() != 0) {
             throw new RuntimeException("Error listing git tags: " + String.join("\n", processResult.error()));
         }
