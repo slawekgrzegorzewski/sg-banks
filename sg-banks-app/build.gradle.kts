@@ -72,7 +72,7 @@ publishing {
         create<MavenPublication>("releaseCurrent") {
             groupId = "pl.sg"
             artifactId = "sg-banks-app"
-            version = VersionUtil.getCurrentVersion().toString()
+            version = System.getenv("VERSION") ?: "-"
             from(components["java"])
         }
     }

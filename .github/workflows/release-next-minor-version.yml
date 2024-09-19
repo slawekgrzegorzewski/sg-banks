@@ -45,6 +45,8 @@ jobs:
 
       - name: Build with Gradle Wrapper
         id: publish
+        env:
+          VERSION: ${{ steps.bump-semver.outputs.new_version }}
         run: |
           ./gradlew :sg-banks-app:publishReleaseCurrentPublicationToMavenRepository
           
