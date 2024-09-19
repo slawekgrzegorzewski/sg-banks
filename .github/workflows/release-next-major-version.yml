@@ -45,9 +45,13 @@ jobs:
           GITHUB_TOKEN: ${{ secrets.PERSONAL_ACCESS_TOKEN }}
           TAG: ${{ steps.bump-semver.outputs.new_version }}
         run: |
+          echo "aaa"
           gh auth login
+          echo "bbb"
           git tag "$TAG"
+          echo "ccc"
           git push origin "$TAG"
+          echo "ddd"
 
       - name: Build with Gradle Wrapper
         id: publish
