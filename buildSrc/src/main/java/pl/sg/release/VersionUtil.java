@@ -27,7 +27,7 @@ public class VersionUtil {
     }
 
     public static @NotNull Version getCurrentVersion() {
-        ProcessResult processResult = CommandRunner.runCommand(List.of("git", "tag", "-l"));
+        ProcessResult processResult = CommandRunner.runCommand(List.of("git", "tag", "-l"), true);
         if (processResult.exitCode() != 0) {
             throw new RuntimeException("Error listing git tags: " + String.join("\n", processResult.error()));
         }

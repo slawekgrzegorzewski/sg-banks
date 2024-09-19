@@ -1,5 +1,7 @@
 package pl.sg.runner;
 
+import org.jetbrains.annotations.NotNull;
+
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStream;
@@ -9,8 +11,14 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 public class CommandRunner {
-    public static ProcessResult runCommand(List<String> command) {
-        System.out.println("Running command: " + String.join(" ", command));
+    public static @NotNull ProcessResult runCommand(List<String> command) {
+        return runCommand(command, false);
+    }
+
+    public static @NotNull ProcessResult runCommand(List<String> command, boolean logToSystemOut) {
+        if (logToSystemOut) {
+            System.out.println("Running command: " + String.join(" ", command));
+        }
         final Process proc;
         try {
             proc = new ProcessBuilder(command)
@@ -18,14 +26,22 @@ public class CommandRunner {
                     .redirectError(ProcessBuilder.Redirect.PIPE)
                     .start();
             proc.waitFor();
-            System.out.println("Finished.");
+            List<String> output = read(proc.getInputStream());
+            List<String> error = read(proc.getErrorStream());
+            if (logToSystemOut) {
+                System.out.println("Finished.");
+                System.out.println("output: " + String.join("\n", output));
+                System.out.println("error: " + String.join("\n", error));
+            }
             return new ProcessResult(
-                    read(proc.getInputStream()),
-                    read(proc.getErrorStream()),
+                    output,
+                    error,
                     proc.exitValue()
             );
         } catch (IOException | InterruptedException e) {
-            System.out.println("Error.");
+            if (logToSystemOut) {
+                System.out.println("Error.");
+            }
             return new ProcessResult(
                     List.of(),
                     List.of(
