@@ -28,8 +28,9 @@ public class CodeArtifactAccess {
                 : "";
         List<String> command = Stream.of(
                         awsCommand,
-                        "get-authorization-token",
+                        "codeartifact",
                         awsProfile,
+                        "get-authorization-token",
                         "--domain sg-repository",
                         "--domain-owner 215372400964",
                         "--region eu-central-1",
