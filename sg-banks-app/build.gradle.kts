@@ -1,24 +1,13 @@
-import org.apache.tools.ant.taskdefs.condition.Os
-import java.io.ByteArrayOutputStream
+import pl.sg.build.CodeArtifactAccess
+import pl.sg.release.VersionUtil
 
 group = "pl.sg"
 version = "0.0.1-SNAPSHOT"
-
-val output = ByteArrayOutputStream()
-var command =
-    if (Os.isFamily(Os.FAMILY_MAC)) "../dev-ops/setup/get-authorization-token.sh" else "aws codeartifact get-authorization-token --domain sg-repository --domain-owner 215372400964 --region eu-central-1 --query authorizationToken --output text"
 
 file("../dev-ops/docker/currency.properties")
     .copyTo(
         file("${System.getProperty("java.home")}\\lib\\currency.properties"),
         overwrite = true)
-
-project.exec {
-    commandLine = command.split(" ")
-        .filter { it.isNotBlank() }
-    standardOutput = output
-}
-val codeartifactToken = output.toString()
 
 java {
     sourceCompatibility = JavaVersion.VERSION_21
@@ -28,6 +17,7 @@ plugins {
     java
     id("org.springframework.boot") version "3.2.1"
     id("io.spring.dependency-management") version "1.1.4"
+    id("maven-publish")
 }
 
 configurations {
@@ -42,7 +32,7 @@ repositories {
         url = uri("https://sg-repository-215372400964.d.codeartifact.eu-central-1.amazonaws.com/maven/sg-repository/")
         credentials {
             username = "aws"
-            password = codeartifactToken
+            password = CodeArtifactAccess.token
         }
     }
 }
@@ -72,9 +62,31 @@ dependencies {
     testImplementation("org.springframework.security:spring-security-test")
     testImplementation("org.testcontainers:junit-jupiter")
     testImplementation("org.testcontainers:postgresql")
-    
+
     testRuntimeOnly("org.junit.platform:junit-platform-launcher")
     testRuntimeOnly("org.postgresql:postgresql:42.5.1")
+}
+
+publishing {
+    publications {
+        create<MavenPublication>("releaseCurrent") {
+            groupId = "pl.sg"
+            artifactId = "sg-banks-app"
+            version = VersionUtil.getCurrentVersion().toString()
+            from(components["java"])
+        }
+    }
+
+    repositories {
+        maven {
+            url =
+                uri("https://sg-repository-215372400964.d.codeartifact.eu-central-1.amazonaws.com/maven/sg-repository/")
+            credentials {
+                username = "aws"
+                password = CodeArtifactAccess.token
+            }
+        }
+    }
 }
 
 tasks.withType<Test> {
