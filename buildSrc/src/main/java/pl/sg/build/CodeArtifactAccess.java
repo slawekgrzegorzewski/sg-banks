@@ -23,12 +23,12 @@ public class CodeArtifactAccess {
                 ? "--profile sg-app"
                 : "";
         String command = """
-                %s codeartifact %s
-                get-authorization-token
-                --domain sg-repository
-                --domain-owner 215372400964
-                --region eu-central-1
-                --query authorizationToken
+                %s codeartifact %s \
+                get-authorization-token \
+                --domain sg-repository \
+                --domain-owner 215372400964 \
+                --region eu-central-1 \
+                --query authorizationToken \
                 --output text
                 """.formatted(awsCommand, awsProfile);
         ProcessResult processResult = CommandRunner.runCommand(command);
