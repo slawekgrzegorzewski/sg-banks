@@ -46,7 +46,7 @@ jobs:
           TAG: ${{ steps.bump-semver.outputs.new_version }}
         run: |
           gh auth login
-          git tag -a "$TAG"
+          git tag "$TAG"
           git push origin "$TAG"
 
       - name: Build with Gradle Wrapper
