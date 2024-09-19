@@ -32,7 +32,7 @@ repositories {
         url = uri("https://sg-repository-215372400964.d.codeartifact.eu-central-1.amazonaws.com/maven/sg-repository/")
         credentials {
             username = "aws"
-            password = CodeArtifactAccess.token
+            password = CodeArtifactAccess.getToken()
         }
     }
 }
@@ -83,7 +83,7 @@ publishing {
                 uri("https://sg-repository-215372400964.d.codeartifact.eu-central-1.amazonaws.com/maven/sg-repository/")
             credentials {
                 username = "aws"
-                password = CodeArtifactAccess.token
+                password = CodeArtifactAccess.getToken()
             }
         }
     }
