@@ -46,12 +46,8 @@ jobs:
         env:
           LEVEL: '${{ github.event.inputs.semver-bump-level }}'
         run: |
-          pwd
-          echo "a"
-          git tag -l
-          echo "b"
           ./gradlew :sg-banks-app:getNextSemver
-          TAG=$(cat sg-banks-app/next.semver)
+          TAG=$(cat next.semver)
           echo "tag=$TAG" >> $GITHUB_OUTPUT
 
       - name: put and push new tag
