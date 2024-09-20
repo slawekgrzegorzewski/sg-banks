@@ -3,7 +3,7 @@ name: build app
 on:
   push:
     branches:
-      - main1
+      - main
   workflow_dispatch:
     
 jobs:
