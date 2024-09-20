@@ -38,7 +38,6 @@ public class VersionUtil {
     }
 
     public static @NotNull Version getCurrentVersion(@Nullable File workingDir) {
-        System.out.println("workingDir = " + workingDir);
         executeCommandAndAssertSucceeded(workingDir, List.of("git", "fetch", "--tag"));
         ProcessResult processResult = executeCommandAndAssertSucceeded(workingDir, List.of("git", "tag", "-l"));
         return processResult
@@ -51,7 +50,7 @@ public class VersionUtil {
     }
 
     private static @NotNull ProcessResult executeCommandAndAssertSucceeded(@Nullable File workingDir, List<String> command) {
-        ProcessResult processResult = CommandRunner.runCommand(command, true, workingDir);
+        ProcessResult processResult = CommandRunner.runCommand(command, false, workingDir);
         if (processResult.exitCode() != 0) {
             throw new RuntimeException("Error executing command: " + String.join(" ", command) + ": " + String.join("\n", processResult.error()));
         }
