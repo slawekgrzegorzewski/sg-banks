@@ -39,10 +39,8 @@ public class VersionUtil {
 
     public static @NotNull Version getCurrentVersion(@Nullable File workingDir) {
         System.out.println("workingDir = " + workingDir);
-        ProcessResult processResult = CommandRunner.runCommand(List.of("git", "tag", "-l"), true, workingDir);
-        if (processResult.exitCode() != 0) {
-            throw new RuntimeException("Error listing git tags: " + String.join("\n", processResult.error()));
-        }
+        executeCommandAndAssertSucceeded(workingDir, List.of("git", "fetch", "--tag"));
+        ProcessResult processResult = executeCommandAndAssertSucceeded(workingDir, List.of("git", "tag", "-l"));
         return processResult
                 .output()
                 .stream()
@@ -50,5 +48,13 @@ public class VersionUtil {
                 .map(Version::parse)
                 .reduce((version, version2) -> version.compareTo(version2) >= 0 ? version : version2)
                 .orElseThrow();
+    }
+
+    private static @NotNull ProcessResult executeCommandAndAssertSucceeded(@Nullable File workingDir, List<String> command) {
+        ProcessResult processResult = CommandRunner.runCommand(command, true, workingDir);
+        if (processResult.exitCode() != 0) {
+            throw new RuntimeException("Error executing command: " + String.join(" ", command) + ": " + String.join("\n", processResult.error()));
+        }
+        return processResult;
     }
 }
