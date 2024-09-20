@@ -69,7 +69,7 @@ dependencies {
     testRuntimeOnly("org.junit.platform:junit-platform-launcher")
     testRuntimeOnly("org.postgresql:postgresql:42.5.1")
 
-    docker("pl.sg:sg-banks-app:1.0.0")
+    docker("pl.sg:sg-banks-app:1.0.1")
 }
 
 val dockerPackage = tasks.register<Zip>("dockerPackage") {
