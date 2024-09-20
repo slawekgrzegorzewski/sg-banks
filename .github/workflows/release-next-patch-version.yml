@@ -2,7 +2,15 @@ name: release next patch version
 
 on:
   workflow_dispatch:
-    
+    inputs:
+      semver-bump-level:
+        required: true
+        description: 'Level of bumping semver'
+        options:
+          - patch
+          - minor
+          - major
+
 jobs:
   build:
     runs-on: ubuntu-latest
@@ -39,7 +47,7 @@ jobs:
         id: bump-semver
         with:
           current_version: ${{ steps.get-latest-tag.outputs.tag }}
-          level: patch
+          level: '${{ github.event.inputs.semver-bump-level }}'
 
       - name: put and push new tag
         id: put-and-push-new-tag
