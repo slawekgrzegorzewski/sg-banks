@@ -65,7 +65,8 @@ jobs:
           REGISTRY: ${{ secrets.SG_REGISTRY_URL }}
           REPOSITORY: banks
         run: |
-          unzip ./sg-banks-app-docker.zip
+          mkdir sg-banks-app-docker
+          unzip ./sg-banks-app-docker.zip -d sg-banks-app-docker
           ls -al
           cd ./sg-banks-app-docker
           export BUILD_DATE=$(date +'%Y-%m-%d_%H-%M')
