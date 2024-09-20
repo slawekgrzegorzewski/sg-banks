@@ -4,6 +4,7 @@ on:
   workflow_dispatch:
     inputs:
       semver-bump-level:
+        type: choice
         required: true
         description: 'Level of bumping semver'
         options:
