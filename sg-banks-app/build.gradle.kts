@@ -82,6 +82,7 @@ val dockerPackage = tasks.register<Zip>("dockerPackage") {
     from(project.rootDir.resolve("sg-banks-app").resolve("build").resolve("libs")) {
         include("sg-banks-app-0.0.1-SNAPSHOT.jar").rename { "sg-banks-app.jar" }
     }
+    dependsOn(tasks.build)
 }
 
 publishing {
@@ -110,7 +111,7 @@ tasks.withType<Test> {
     useJUnitPlatform()
 }
 
-tasks.create("getCurrentSemver", Task::class) {
+val getCurrentSemver by tasks.creating(Task::class) {
     doLast {
         file(project.rootDir.resolve("current.semver")).appendText(
             VersionUtil.getCurrentVersion(project.rootDir).toString()
@@ -118,7 +119,7 @@ tasks.create("getCurrentSemver", Task::class) {
     }
 }
 
-tasks.create("getNextSemver", Task::class) {
+val getNextSemver by tasks.creating(Task::class) {
     doLast {
         file(project.rootDir.resolve("next.semver")).appendText(
             VersionUtil.getNextVersion(
@@ -129,10 +130,10 @@ tasks.create("getNextSemver", Task::class) {
     }
 }
 
-tasks.register("prepareDockerDistribution") {
+val prepareDockerDistribution by tasks.creating {
     doLast {
         val files = docker.resolve()
-        if(files.size != 1) throw RuntimeException("Too much files")
+        if (files.size != 1) throw RuntimeException("Too much files")
         files.forEach {
             file(project.rootDir.resolve("docker_zip.txt")).appendText(
                 it.absolutePath
