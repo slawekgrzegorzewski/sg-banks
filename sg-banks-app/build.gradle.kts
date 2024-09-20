@@ -72,7 +72,7 @@ publishing {
         create<MavenPublication>("releaseCurrent") {
             groupId = "pl.sg"
             artifactId = "sg-banks-app"
-            version = System.getenv("VERSION") ?: "-"
+            version = VersionUtil.getCurrentVersion(project.rootDir).toString()
             from(components["java"])
         }
     }
@@ -91,4 +91,16 @@ publishing {
 
 tasks.withType<Test> {
     useJUnitPlatform()
+}
+
+tasks.create("getCurrentSemver", Task::class) {
+    doLast {
+        file(project.rootDir.resolve("current.semver")).appendText(VersionUtil.getCurrentVersion(project.rootDir).toString())
+    }
+}
+
+tasks.create("getNextSemver", Task::class) {
+    doLast {
+        file(project.rootDir.resolve("next.semver")).appendText(VersionUtil.getNextVersion(project.rootDir, System.getenv("LEVEL")).toString())
+    }
 }

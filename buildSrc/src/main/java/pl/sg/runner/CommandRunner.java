@@ -1,27 +1,29 @@
 package pl.sg.runner;
 
 import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 
-import java.io.BufferedReader;
-import java.io.IOException;
-import java.io.InputStream;
-import java.io.InputStreamReader;
+import java.io.*;
 import java.util.Arrays;
 import java.util.List;
 import java.util.stream.Collectors;
 
 public class CommandRunner {
     public static @NotNull ProcessResult runCommand(List<String> command) {
-        return runCommand(command, false);
+        return runCommand(command, false, null);
     }
 
-    public static @NotNull ProcessResult runCommand(List<String> command, boolean logToSystemOut) {
+    public static @NotNull ProcessResult runCommand(
+            List<String> command,
+            boolean logToSystemOut,
+            @Nullable File workingDirectory) {
         if (logToSystemOut) {
             System.out.println("Running command: " + String.join(" ", command));
         }
         final Process proc;
         try {
             proc = new ProcessBuilder(command)
+                    .directory(workingDirectory)
                     .redirectOutput(ProcessBuilder.Redirect.PIPE)
                     .redirectError(ProcessBuilder.Redirect.PIPE)
                     .start();
