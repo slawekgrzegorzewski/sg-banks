@@ -46,6 +46,8 @@ jobs:
         env:
           LEVEL: '${{ github.event.inputs.semver-bump-level }}'
         run: |
+          git config --global user.email "bot@grzegorzewski.org"
+          git config --global user.name "Bot"
           ./gradlew :sg-banks-app:getCurrentSemver
           ./gradlew :sg-banks-app:getNextSemver
           CURRENT_TAG=$(cat current.semver)
@@ -55,9 +57,7 @@ jobs:
           rm sg-banks-app/build.gradle.kts
           mv sg-banks-app/build.gradle.kts_new sg-banks-app/build.gradle.kts
           git add sg-banks-app/build.gradle.kts
-          git commit -m "Update docker dependency from $CURRENT_TAG to $NEXT_TAG" 
-          git config --global user.email "bot@grzegorzewski.org"
-          git config --global user.name "Bot"
+          git commit -m "Update docker dependency from $CURRENT_TAG to $NEXT_TAG"
           git push origin
 
       - name: put and push new tag
