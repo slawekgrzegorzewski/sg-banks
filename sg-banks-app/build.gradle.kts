@@ -20,7 +20,10 @@ plugins {
     id("maven-publish")
 }
 
+val docker by configurations.creating
+
 configurations {
+    docker
     compileOnly {
         extendsFrom(configurations.annotationProcessor.get())
     }
@@ -65,6 +68,20 @@ dependencies {
 
     testRuntimeOnly("org.junit.platform:junit-platform-launcher")
     testRuntimeOnly("org.postgresql:postgresql:42.5.1")
+
+    docker("pl.sg:sg-banks-app:1.0.0")
+}
+
+val dockerPackage = tasks.register<Zip>("dockerPackage") {
+    archiveFileName.set("docker.zip")
+    from(project.rootDir.resolve("dev-ops").resolve("docker")) {
+        include("currency.properties")
+        include("Dockerfile")
+        include("Dockerfile-debug")
+    }
+    from(project.rootDir.resolve("sg-banks-app").resolve("build").resolve("libs")) {
+        include("sg-banks-app-0.0.1-SNAPSHOT.jar").rename { "sg-banks-app.jar" }
+    }
 }
 
 publishing {
@@ -73,7 +90,7 @@ publishing {
             groupId = "pl.sg"
             artifactId = "sg-banks-app"
             version = VersionUtil.getCurrentVersion(project.rootDir).toString()
-            from(components["java"])
+            artifact(dockerPackage)
         }
     }
 
@@ -95,12 +112,31 @@ tasks.withType<Test> {
 
 tasks.create("getCurrentSemver", Task::class) {
     doLast {
-        file(project.rootDir.resolve("current.semver")).appendText(VersionUtil.getCurrentVersion(project.rootDir).toString())
+        file(project.rootDir.resolve("current.semver")).appendText(
+            VersionUtil.getCurrentVersion(project.rootDir).toString()
+        )
     }
 }
 
 tasks.create("getNextSemver", Task::class) {
     doLast {
-        file(project.rootDir.resolve("next.semver")).appendText(VersionUtil.getNextVersion(project.rootDir, System.getenv("LEVEL")).toString())
+        file(project.rootDir.resolve("next.semver")).appendText(
+            VersionUtil.getNextVersion(
+                project.rootDir,
+                System.getenv("LEVEL")
+            ).toString()
+        )
+    }
+}
+
+tasks.register("prepareDockerDistribution") {
+    doLast {
+        val files = docker.resolve()
+        if(files.size != 1) throw RuntimeException("Too much files")
+        files.forEach {
+            file(project.rootDir.resolve("docker_zip.txt")).appendText(
+                it.absolutePath
+            )
+        }
     }
 }

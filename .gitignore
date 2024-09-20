@@ -36,3 +36,6 @@ out/
 
 ipStorage
 requests
+/docker_zip.txt
+/next.semver
+/current.semver

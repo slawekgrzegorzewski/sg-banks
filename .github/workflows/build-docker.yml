@@ -1,9 +1,6 @@
-name: build app
+name: build docker
 
 on:
-  push:
-    branches:
-      - main
   workflow_dispatch:
     
 jobs:
@@ -37,7 +34,8 @@ jobs:
       - name: Build with Gradle Wrapper
         id: build
         run: |
-          ./gradlew :sg-banks-app:build
+          ./gradlew :sg-banks-app:prepareDockerDistribution
+          cp $(cat docker_zip.txt) ./sg-banks-app-docker.zip
 
       - name: setup insecure registry
         id: setup-insecure-registry
@@ -67,9 +65,11 @@ jobs:
           REGISTRY: ${{ secrets.SG_REGISTRY_URL }}
           REPOSITORY: banks
         run: |
+          unzip ./sg-banks-app-docker.zip
+          cd ./sg-banks-app-docker
           export BUILD_DATE=$(date +'%Y-%m-%d_%H-%M')
-          docker buildx build . -f dev-ops/docker/Dockerfile -t $REGISTRY/$REPOSITORY:latest -t $REGISTRY/$REPOSITORY:$BUILD_DATE-$(git rev-parse --short "$GITHUB_SHA") --platform linux/x86_64 --load
-          docker buildx build . -f dev-ops/docker/Dockerfile-debug -t $REGISTRY/$REPOSITORY:latest-debug -t $REGISTRY/$REPOSITORY:$BUILD_DATE-$(git rev-parse --short "$GITHUB_SHA")-debug --platform linux/x86_64 --load
+          docker buildx build . -f Dockerfile -t $REGISTRY/$REPOSITORY:latest -t $REGISTRY/$REPOSITORY:$BUILD_DATE-$(git rev-parse --short "$GITHUB_SHA") --platform linux/x86_64 --load
+          docker buildx build . -f Dockerfile-debug -t $REGISTRY/$REPOSITORY:latest-debug -t $REGISTRY/$REPOSITORY:$BUILD_DATE-$(git rev-parse --short "$GITHUB_SHA")-debug --platform linux/x86_64 --load
           docker push $REGISTRY/$REPOSITORY:latest
           docker push $REGISTRY/$REPOSITORY:$BUILD_DATE-$(git rev-parse --short "$GITHUB_SHA")
           docker push $REGISTRY/$REPOSITORY:latest-debug
