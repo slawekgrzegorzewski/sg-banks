@@ -66,6 +66,7 @@ jobs:
           REPOSITORY: banks
         run: |
           unzip ./sg-banks-app-docker.zip
+          ls -al
           cd ./sg-banks-app-docker
           export BUILD_DATE=$(date +'%Y-%m-%d_%H-%M')
           docker buildx build . -f Dockerfile -t $REGISTRY/$REPOSITORY:latest -t $REGISTRY/$REPOSITORY:$BUILD_DATE-$(git rev-parse --short "$GITHUB_SHA") --platform linux/x86_64 --load

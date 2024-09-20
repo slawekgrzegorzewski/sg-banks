@@ -46,9 +46,15 @@ jobs:
         env:
           LEVEL: '${{ github.event.inputs.semver-bump-level }}'
         run: |
+          ./gradlew :sg-banks-app:getCurrentSemver
           ./gradlew :sg-banks-app:getNextSemver
-          TAG=$(cat next.semver)
-          echo "tag=$TAG" >> $GITHUB_OUTPUT
+          CURRENT_TAG=$(cat current.semver)
+          NEXT_TAG=$(cat next.semver)
+          echo "tag=$NEXT_TAG" >> $GITHUB_OUTPUT
+          sed "s/docker(\"pl.sg:sg-banks-app:$CURRENT_TAG\")/docker(\"pl.sg:sg-banks-app:$NEXT_TAG\")/" sg-banks-app/build.gradle.kts > sg-banks-app/build.gradle.kts_new
+          rm sg-banks-app/build.gradle.kts
+          mv sg-banks-app/build.gradle.kts_new sg-banks-app/build.gradle.kts
+          git add sg-banks-app/build.gradle.kts
 
       - name: put and push new tag
         id: put-and-push-new-tag
