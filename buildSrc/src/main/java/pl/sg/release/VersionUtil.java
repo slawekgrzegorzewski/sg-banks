@@ -38,6 +38,7 @@ public class VersionUtil {
     }
 
     public static @NotNull Version getCurrentVersion(@Nullable File workingDir) {
+        System.out.println("workingDir = " + workingDir);
         ProcessResult processResult = CommandRunner.runCommand(List.of("git", "tag", "-l"), true, workingDir);
         if (processResult.exitCode() != 0) {
             throw new RuntimeException("Error listing git tags: " + String.join("\n", processResult.error()));
