@@ -55,6 +55,7 @@ jobs:
           rm sg-banks-app/build.gradle.kts
           mv sg-banks-app/build.gradle.kts_new sg-banks-app/build.gradle.kts
           git add sg-banks-app/build.gradle.kts
+          git commit -m "Update docker dependency from $CURRENT_TAG to $NEXT_TAG" 
 
       - name: put and push new tag
         id: put-and-push-new-tag
